@@ -1,59 +1,60 @@
-import React, { useEffect } from 'react';
-import { X } from 'lucide-react';
+import { useEffect } from 'react';
 
-const Modal = ({ isOpen, onClose, title, children, className = '' }) => {
-  // Close on escape key
+const Modal = ({ open, onClose, children, size = 'md' }) => {
   useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === 'Escape') onClose();
-    };
-    
-    if (isOpen) {
+    const handleEscape = (e) => { if (e.key === 'Escape') onClose(); };
+    if (open) {
       document.addEventListener('keydown', handleEscape);
-      // Prevent scroll on body when modal is open
       document.body.style.overflow = 'hidden';
     }
-    
     return () => {
       document.removeEventListener('keydown', handleEscape);
       document.body.style.overflow = 'unset';
     };
-  }, [isOpen, onClose]);
+  }, [open, onClose]);
 
-  if (!isOpen) return null;
+  const sizeClasses = {
+    sm: 'max-w-sm',
+    md: 'max-w-lg',
+    lg: 'max-w-2xl',
+    xl: 'max-w-4xl',
+    full: 'max-w-[95vw]'
+  };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto">
+    <div className={`fixed inset-0 z-50 ${open ? 'pointer-events-auto' : 'pointer-events-none'}`}>
       {/* Backdrop */}
       <div 
-        className="fixed inset-0 bg-black bg-opacity-50 transition-opacity" 
         onClick={onClose}
+        className={`fixed inset-0 bg-charcoal-900/60 backdrop-blur-sm transition-opacity duration-300 ${
+          open ? 'opacity-100' : 'opacity-0'
+        }`}
       />
-      
-      {/* Modal */}
-      <div className="flex min-h-full items-center justify-center p-4">
-        <div 
-          className={`relative bg-slate-900 rounded-xl shadow-xl transform transition-all max-w-lg w-full p-6 ${className}`}
-          onClick={(e) => e.stopPropagation()}
-        >
-          {/* Header */}
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-white">
-              {title}
-            </h3>
-            <button
-              onClick={onClose}
-              className="p-1 rounded-lg hover:bg-slate-800 transition-colors"
-              aria-label="Close modal"
-            >
-              <X size={20} className="text-slate-400" />
-            </button>
-          </div>
 
-          {/* Content */}
-          <div>
-            {children}
-          </div>
+      {/* Desktop Modal */}
+      <div className={`hidden sm:flex fixed inset-0 items-center justify-center p-4 ${
+        open ? '' : 'pointer-events-none'
+      }`}>
+        <div className={`
+          relative bg-cream-50 rounded-lg shadow-2xl w-full ${sizeClasses[size]}
+          transform transition-all duration-300
+          ${open ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-4'}
+        `}>
+          {children}
+        </div>
+      </div>
+
+      {/* Mobile: Bottom Sheet */}
+      <div className={`
+        sm:hidden fixed bottom-0 left-0 right-0 bg-cream-50 rounded-t-3xl shadow-2xl
+        transform transition-transform duration-300 ease-out max-h-[90vh] overflow-hidden
+        ${open ? 'translate-y-0' : 'translate-y-full'}
+      `}>
+        <div className="flex justify-center pt-3 pb-2">
+          <div className="w-10 h-1 bg-cream-300 rounded-full" />
+        </div>
+        <div className="overflow-auto max-h-[calc(90vh-20px)] pb-safe">
+          {children}
         </div>
       </div>
     </div>

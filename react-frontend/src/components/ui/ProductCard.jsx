@@ -1,7 +1,11 @@
-const ProductCard = ({ product, onAddToCart }) => {
+const ProductCard = ({ product, onAddToCart, onViewDetails }) => {
   return (
     <div className="group card-museum">
-      <div className="relative aspect-[4/3] overflow-hidden bg-cream-200">
+      {/* Clickable image area to view details */}
+      <button 
+        onClick={() => onViewDetails && onViewDetails(product)}
+        className="relative aspect-[4/3] overflow-hidden bg-cream-200 w-full text-left cursor-pointer"
+      >
         <img
           src={product.image}
           alt={product.name}
@@ -11,11 +15,21 @@ const ProductCard = ({ product, onAddToCart }) => {
         <div className="absolute top-4 left-4">
           <span className="text-xs tracking-widest uppercase font-sans text-charcoal-800 bg-cream-50/90 backdrop-blur-sm px-3 py-1.5">{product.category}</span>
         </div>
-        <div className="absolute inset-0 bg-charcoal-900/0 group-hover:bg-charcoal-900/20 transition-colors duration-500" />
-      </div>
+        <div className="absolute inset-0 bg-charcoal-900/0 group-hover:bg-charcoal-900/20 transition-colors duration-500 flex items-center justify-center">
+          <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-cream-50/90 backdrop-blur-sm px-4 py-2 text-xs tracking-widest uppercase font-sans text-charcoal-800">
+            View Details
+          </span>
+        </div>
+      </button>
+
       <div className="p-6">
-        <h3 className="font-serif text-xl text-charcoal-800 mb-2 group-hover:text-charcoal-600 transition-colors">{product.name}</h3>
-        <p className="text-charcoal-500 text-sm font-sans mb-4">{product.description}</p>
+        <button 
+          onClick={() => onViewDetails && onViewDetails(product)}
+          className="text-left w-full"
+        >
+          <h3 className="font-serif text-xl text-charcoal-800 mb-2 group-hover:text-charcoal-600 transition-colors">{product.name}</h3>
+          <p className="text-charcoal-500 text-sm font-sans mb-4">{product.description}</p>
+        </button>
         <div className="w-8 h-px bg-gold-400 mb-4" />
         <div className="flex items-end justify-between">
           <div>
@@ -26,7 +40,7 @@ const ProductCard = ({ product, onAddToCart }) => {
             <span className="absolute inset-0 bg-charcoal-800 transform -translate-x-full group-hover/btn:translate-x-0 transition-transform duration-300" />
             <span className="relative z-10 flex items-center gap-2">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
-              Add
+              Save
             </span>
           </button>
         </div>

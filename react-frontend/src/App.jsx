@@ -4,6 +4,8 @@ import HomePage from './pages/user/HomePage';
 import ProductListing from './pages/user/ProductListing';
 import OrderForm from './pages/user/OrderPage';
 import BottomNav from './components/ui/BottomNav';
+import CarDetailModal from './components/ui/CarDetailModal';
+import ConfirmModal from './components/ui/ConfirmModal';
 import searchItems from './utils/searchItems';
 import './App.css';
 
@@ -295,6 +297,9 @@ function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCar, setSelectedCar] = useState(null);
+  const [isCarModalOpen, setIsCarModalOpen] = useState(false);
+  const [confirmModal, setConfirmModal] = useState({ open: false, carId: null });
 
   useEffect(() => { preloadImages(ALL_ITEMS.map((item) => item.image)); }, []);
 
@@ -319,6 +324,21 @@ function App() {
     toast(`${removed.name} removed`, {
       style: { background: '#FAF8F5', color: '#1A1A1A', border: '1px solid #E0D6C8' }
     });
+  };
+
+  const handleViewDetails = (car) => {
+    setSelectedCar(car);
+    setIsCarModalOpen(true);
+  };
+
+  const handleRemoveWithConfirm = (carId) => {
+    setConfirmModal({ open: true, carId });
+  };
+
+  const confirmRemove = () => {
+    if (confirmModal.carId) {
+      removeFromCart(confirmModal.carId);
+    }
   };
 
   const handleSubmit = (formData) => {
@@ -346,9 +366,9 @@ function App() {
   const renderPage = useMemo(() => {
     switch (currentPage) {
       case 'listing':
-        return <ProductListing items={filteredItems} onAddToCart={addToCart} />;
+        return <ProductListing items={filteredItems} onAddToCart={addToCart} onViewDetails={handleViewDetails} />;
       case 'order':
-        return <OrderForm cart={cart} onRemove={removeFromCart} onSubmit={handleSubmit} />;
+        return <OrderForm cart={cart} onRemove={handleRemoveWithConfirm} onSubmit={handleSubmit} />;
       default:
         return <HomePage onNavigate={handleNavigate} />;
     }
@@ -414,7 +434,25 @@ function App() {
         open={isCartOpen} 
         onClose={() => setIsCartOpen(false)} 
         cart={cart} 
-        onRemove={removeFromCart} 
+        onRemove={handleRemoveWithConfirm} 
+      />
+
+      <CarDetailModal
+        car={selectedCar}
+        open={isCarModalOpen}
+        onClose={() => setIsCarModalOpen(false)}
+        onSave={addToCart}
+      />
+
+      <ConfirmModal
+        open={confirmModal.open}
+        onClose={() => setConfirmModal({ open: false, carId: null })}
+        onConfirm={confirmRemove}
+        title="Remove Car"
+        message="Are you sure you want to remove this car from your saved list?"
+        confirmText="Remove"
+        cancelText="Keep"
+        variant="danger"
       />
     </div>
   );

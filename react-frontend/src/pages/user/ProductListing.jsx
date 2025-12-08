@@ -1,6 +1,6 @@
 import ProductCard from "../../components/ui/ProductCard";
 
-const ProductListing = ({ items, onAddToCart }) => {
+const ProductListing = ({ items, onAddToCart, onViewDetails }) => {
   return (
     <div className="min-h-screen bg-cream-100">
       <section className="relative py-24 lg:py-32 bg-cream-50 overflow-hidden">
@@ -40,7 +40,7 @@ const ProductListing = ({ items, onAddToCart }) => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
                 {items.map((item, index) => (
                   <div key={item.id} className="animate-fade-in-up" style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'forwards', opacity: 0 }}>
-                    <ProductCard product={item} onAddToCart={onAddToCart} />
+                    <ProductCard product={item} onAddToCart={onAddToCart} onViewDetails={onViewDetails} />
                   </div>
                 ))}
               </div>
