@@ -1,0 +1,167 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Museum-inspired base styles */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply font-sans text-charcoal-800 bg-cream-100 antialiased;
+    font-feature-settings: 'kern' 1, 'liga' 1;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif font-medium tracking-tight;
+  }
+
+  /* Elegant selection color */
+  ::selection {
+    @apply bg-gold-400/30 text-charcoal-900;
+  }
+}
+
+@layer components {
+  /* Museum-style elegant button */
+  .btn-museum {
+    @apply relative inline-flex items-center justify-center px-8 py-3 
+           font-sans text-sm tracking-widest uppercase
+           border border-charcoal-800 text-charcoal-800
+           bg-transparent overflow-hidden
+           transition-all duration-500 ease-museum;
+  }
+  
+  .btn-museum::before {
+    content: '';
+    @apply absolute inset-0 bg-charcoal-800 transform -translate-x-full
+           transition-transform duration-500 ease-museum;
+  }
+  
+  .btn-museum:hover::before {
+    @apply translate-x-0;
+  }
+  
+  .btn-museum span {
+    @apply relative z-10 transition-colors duration-500;
+  }
+  
+  .btn-museum:hover span {
+    @apply text-cream-100;
+  }
+
+  /* Inverted button variant */
+  .btn-museum-light {
+    @apply border-cream-100 text-cream-100;
+  }
+  
+  .btn-museum-light::before {
+    @apply bg-cream-100;
+  }
+  
+  .btn-museum-light:hover span {
+    @apply text-charcoal-800;
+  }
+
+  /* Elegant underline link */
+  .link-elegant {
+    @apply relative inline-block text-charcoal-700 transition-colors duration-300;
+  }
+  
+  .link-elegant::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-0 h-px bg-charcoal-800
+           transition-all duration-300 ease-museum;
+  }
+  
+  .link-elegant:hover::after {
+    @apply w-full;
+  }
+
+  /* Museum card style */
+  .card-museum {
+    @apply bg-cream-50 border border-cream-300/50 
+           transition-all duration-500 ease-museum;
+  }
+  
+  .card-museum:hover {
+    @apply shadow-xl shadow-charcoal-900/5 border-cream-400;
+  }
+
+  /* Elegant divider */
+  .divider-elegant {
+    @apply w-16 h-px bg-gold-400 mx-auto;
+  }
+
+  /* Image reveal animation */
+  .img-reveal {
+    @apply relative overflow-hidden;
+  }
+  
+  .img-reveal::after {
+    content: '';
+    @apply absolute inset-0 bg-cream-100 transform translate-x-0
+           transition-transform duration-700 ease-museum;
+  }
+  
+  .img-reveal.revealed::after {
+    @apply translate-x-full;
+  }
+}
+
+@layer utilities {
+  /* Stagger animation delays */
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-400 { animation-delay: 400ms; }
+  .delay-500 { animation-delay: 500ms; }
+  .delay-600 { animation-delay: 600ms; }
+
+  /* Text balance for headings */
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Custom scrollbar - elegant and minimal */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-cream-200;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-charcoal-300 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-charcoal-400;
+}
+
+/* Smooth page transitions */
+.page-transition-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 600ms ease-out, transform 600ms ease-out;
+}
+
+.page-transition-exit {
+  opacity: 1;
+}
+
+.page-transition-exit-active {
+  opacity: 0;
+  transition: opacity 300ms ease-in;
+}

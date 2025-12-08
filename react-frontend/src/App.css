@@ -1,0 +1,154 @@
+/* Museum-inspired App Styles */
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Page fade animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes lineGrow {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+/* Elegant form styles */
+.form-museum input,
+.form-museum select,
+.form-museum textarea {
+  @apply w-full px-4 py-3 bg-transparent border-b border-charcoal-200
+         text-charcoal-800 placeholder:text-charcoal-400
+         focus:outline-none focus:border-charcoal-800
+         transition-colors duration-300;
+  font-family: 'Inter', sans-serif;
+}
+
+.form-museum input:focus,
+.form-museum select:focus,
+.form-museum textarea:focus {
+  @apply border-charcoal-800;
+}
+
+.form-museum label {
+  @apply block text-xs uppercase tracking-widest text-charcoal-500 mb-2 font-sans;
+}
+
+/* Modal overlay - museum style */
+.modal-overlay-museum {
+  @apply fixed inset-0 bg-charcoal-900/60 backdrop-blur-sm
+         flex items-center justify-center z-50;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-museum {
+  @apply bg-cream-50 p-8 md:p-12 max-w-md w-full mx-4
+         border border-cream-300;
+  animation: slideUp 0.4s ease-out;
+}
+
+/* Cart item styles */
+.cart-item-museum {
+  @apply flex gap-4 py-6 border-b border-cream-300 last:border-b-0;
+}
+
+/* Order container */
+.order-container-museum {
+  @apply w-full min-h-screen py-16 px-4 bg-cream-100;
+}
+
+/* Order card */
+.order-card-museum {
+  @apply bg-cream-50 p-8 md:p-10 border border-cream-300;
+}
+
+/* Image hover effect */
+.img-zoom {
+  @apply overflow-hidden;
+}
+
+.img-zoom img {
+  @apply transition-transform duration-700 ease-out;
+}
+
+.img-zoom:hover img {
+  @apply scale-105;
+}
+
+/* Text reveal animation */
+.text-reveal {
+  @apply overflow-hidden;
+}
+
+.text-reveal span {
+  @apply inline-block;
+  animation: slideUp 0.8s ease-out forwards;
+}
+
+/* Stagger children animations */
+.stagger-children > * {
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 100ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 200ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 300ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 400ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 500ms; }
+
+/* Horizontal scroll for gallery */
+.gallery-scroll {
+  @apply flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.gallery-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.gallery-scroll > * {
+  @apply snap-center flex-shrink-0;
+}
+
+/* Elegant separator */
+.separator-elegant {
+  @apply relative flex items-center justify-center py-8;
+}
+
+.separator-elegant::before,
+.separator-elegant::after {
+  content: '';
+  @apply flex-1 h-px bg-cream-300;
+}
+
+.separator-elegant span {
+  @apply px-6 text-charcoal-400 text-sm tracking-widest uppercase;
+}
