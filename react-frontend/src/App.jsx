@@ -3,6 +3,7 @@ import { Toaster, toast } from 'react-hot-toast';
 import HomePage from './pages/user/HomePage';
 import ProductListing from './pages/user/ProductListing';
 import OrderForm from './pages/user/OrderPage';
+import BottomNav from './components/ui/BottomNav';
 import searchItems from './utils/searchItems';
 import './App.css';
 
@@ -159,18 +160,29 @@ const Navigation = ({ current, onNavigate, cartCount, onCartOpen, search, onSear
   );
 };
 
-// --- Saved Items Drawer ---
+// --- Saved Items Drawer (Mobile: bottom sheet, Desktop: side panel) ---
 const SavedDrawer = ({ open, onClose, cart, onRemove }) => {
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => { document.body.style.overflow = 'unset'; };
+  }, [open]);
+
   return (
     <>
-      {open && (
-        <div 
-          className="fixed inset-0 bg-charcoal-900/40 backdrop-blur-sm z-40 transition-opacity"
-          onClick={onClose}
-        />
-      )}
+      {/* Backdrop */}
+      <div 
+        className={`fixed inset-0 bg-charcoal-900/40 backdrop-blur-sm z-40 transition-opacity duration-300 ${
+          open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={onClose}
+      />
       
-      <div className={`fixed top-0 right-0 h-full w-full sm:w-[420px] bg-cream-50 z-50 transform transition-transform duration-500 ease-out ${
+      {/* Desktop: Slide from right */}
+      <div className={`hidden sm:block fixed top-0 right-0 h-full w-[420px] bg-cream-50 z-50 transform transition-transform duration-500 ease-out ${
         open ? 'translate-x-0' : 'translate-x-full'
       }`}>
         <div className="flex items-center justify-between px-8 py-6 border-b border-cream-300">
@@ -186,54 +198,94 @@ const SavedDrawer = ({ open, onClose, cart, onRemove }) => {
         </div>
 
         <div className="px-8 py-6 overflow-auto h-[calc(100%-120px)]">
-          {cart.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full text-center">
-              <svg className="w-16 h-16 text-charcoal-200 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
-              <p className="text-charcoal-500 font-sans text-sm">No saved artworks</p>
-              <p className="text-charcoal-400 text-xs mt-2 font-sans">Save artworks to view them later</p>
-            </div>
-          ) : (
-            <div className="space-y-6">
-              {cart.map((item) => (
-                <div key={item.id} className="flex gap-4 pb-6 border-b border-cream-200 last:border-b-0">
-                  <div className="w-24 h-20 overflow-hidden bg-cream-200">
-                    <img 
-                      src={item.image} 
-                      alt={item.name} 
-                      className="w-full h-full object-cover" 
-                      onError={(e) => (e.target.style.display = 'none')} 
-                    />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-serif text-charcoal-800 text-sm mb-1">{item.name}</h4>
-                    <p className="text-charcoal-500 text-xs font-sans mb-3">{item.description}</p>
-                    <button 
-                      onClick={() => onRemove(item.id)} 
-                      className="text-charcoal-400 hover:text-charcoal-800 text-xs font-sans tracking-wide uppercase transition-colors"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+          <SavedContent cart={cart} onRemove={onRemove} />
         </div>
 
         {cart.length > 0 && (
           <div className="absolute bottom-0 left-0 right-0 px-8 py-6 bg-cream-50 border-t border-cream-300">
-            <button 
-              onClick={onClose}
-              className="btn-museum w-full"
-            >
+            <button onClick={onClose} className="btn-museum w-full">
+              <span>Continue Exploring</span>
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Mobile: Slide from bottom (modal sheet) */}
+      <div className={`sm:hidden fixed bottom-0 left-0 right-0 bg-cream-50 z-50 rounded-t-3xl transform transition-transform duration-500 ease-out max-h-[85vh] ${
+        open ? 'translate-y-0' : 'translate-y-full'
+      }`}>
+        {/* Drag handle */}
+        <div className="flex justify-center pt-3 pb-2">
+          <div className="w-10 h-1 bg-cream-300 rounded-full" />
+        </div>
+        
+        <div className="flex items-center justify-between px-6 pb-4 border-b border-cream-300">
+          <h3 className="font-serif text-lg text-charcoal-800">Saved Artworks</h3>
+          <button 
+            onClick={onClose} 
+            className="p-2 rounded-full bg-cream-100 hover:bg-cream-200 transition-colors"
+          >
+            <svg className="w-5 h-5 text-charcoal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <div className="px-6 py-4 overflow-auto max-h-[calc(85vh-160px)]">
+          <SavedContent cart={cart} onRemove={onRemove} />
+        </div>
+
+        {cart.length > 0 && (
+          <div className="px-6 py-4 bg-cream-50 border-t border-cream-300 pb-safe">
+            <button onClick={onClose} className="btn-museum w-full">
               <span>Continue Exploring</span>
             </button>
           </div>
         )}
       </div>
     </>
+  );
+};
+
+// Shared content for SavedDrawer
+const SavedContent = ({ cart, onRemove }) => {
+  if (cart.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-12 text-center">
+        <svg className="w-16 h-16 text-charcoal-200 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+        </svg>
+        <p className="text-charcoal-500 font-sans text-sm">No saved artworks</p>
+        <p className="text-charcoal-400 text-xs mt-2 font-sans">Save artworks to view them later</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      {cart.map((item) => (
+        <div key={item.id} className="flex gap-4 pb-4 border-b border-cream-200 last:border-b-0">
+          <div className="w-20 h-16 sm:w-24 sm:h-20 overflow-hidden bg-cream-200 rounded-lg flex-shrink-0">
+            <img 
+              src={item.image} 
+              alt={item.name} 
+              className="w-full h-full object-cover" 
+              onError={(e) => (e.target.style.display = 'none')} 
+            />
+          </div>
+          <div className="flex-1 min-w-0">
+            <h4 className="font-serif text-charcoal-800 text-sm mb-1 truncate">{item.name}</h4>
+            <p className="text-charcoal-500 text-xs font-sans mb-2 line-clamp-1">{item.description}</p>
+            <button 
+              onClick={() => onRemove(item.id)} 
+              className="text-charcoal-400 hover:text-charcoal-800 text-xs font-sans tracking-wide uppercase transition-colors"
+            >
+              Remove
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
   );
 };
 
@@ -315,9 +367,16 @@ function App() {
         onSearchChange={setSearch}
       />
 
-      <main className="pt-20 lg:pt-24">{renderPage}</main>
+      <main className="pt-20 lg:pt-24 pb-20 lg:pb-0">{renderPage}</main>
 
-      <footer className="bg-charcoal-800 text-cream-100 py-16">
+      <BottomNav
+        current={currentPage}
+        onNavigate={handleNavigate}
+        cartCount={cart.length}
+        onCartOpen={() => setIsCartOpen(true)}
+      />
+
+      <footer className="bg-charcoal-800 text-cream-100 py-16 hidden lg:block">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
             <div>

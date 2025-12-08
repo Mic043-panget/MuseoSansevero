@@ -9,18 +9,30 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["vite.svg"],
       manifest: {
-        name: "Prestige Automotive Gallery",
-        short_name: "Prestige",
-        description: "A curated collection of the world's most exceptional automobiles",
-        theme_color: "#1A1A1A",
+        name: "My React App",
+        short_name: "ReactApp",
+        description: "My Awesome React Application",
+        theme_color: "#ffffff",
         icons: [
-          { src: "favicon.ico", sizes: "64x64 32x32 24x24 16x16", type: "image/x-icon" },
-          { src: "logo192.png", type: "image/png", sizes: "192x192" },
-          { src: "logo512.png", type: "image/png", sizes: "512x512" }
+          {
+            src: "favicon.ico",
+            sizes: "64x64 32x32 24x24 16x16",
+            type: "image/x-icon",
+          },
+          {
+            src: "logo192.png",
+            type: "image/png",
+            sizes: "192x192",
+          },
+          {
+            src: "logo512.png",
+            type: "image/png",
+            sizes: "512x512",
+          },
         ],
-        start_url: "/",
+        start_url: "/index.html",
         display: "standalone",
-        background_color: "#FAF8F5",
+        background_color: "#333333",
       },
       workbox: {
         globPatterns: ["**/*.{js,css,html,png,svg,ico,json}"],
@@ -28,7 +40,11 @@ export default defineConfig({
         runtimeCaching: [
           {
             urlPattern: ({ request }) =>
-              ["document", "script", "style", "image", "font"].includes(request.destination),
+              request.destination === "document" ||
+              request.destination === "script" ||
+              request.destination === "style" ||
+              request.destination === "image" ||
+              request.destination === "font",
             handler: "NetworkFirst",
             options: {
               cacheName: "offline-cache",
