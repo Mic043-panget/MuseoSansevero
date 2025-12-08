@@ -7,18 +7,18 @@ import BottomNav from './components/ui/BottomNav';
 import searchItems from './utils/searchItems';
 import './App.css';
 
-// --- Museum Art Collection ---
+// --- Luxury Car Collection ---
 const BASE_ITEMS = [
-  { id: 1, name: 'The Veiled Christ', price: 0, image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1200', description: 'Giuseppe Sanmartino, 1753', category: 'Sculpture' },
-  { id: 2, name: 'Modesty', price: 0, image: 'https://images.unsplash.com/photo-1561214115-f2f134cc4912?w=1200', description: 'Antonio Corradini, 1752', category: 'Sculpture' },
-  { id: 3, name: 'Disillusion', price: 0, image: 'https://images.unsplash.com/photo-1544967082-d9d25d867d66?w=1200', description: 'Francesco Queirolo, 1753-54', category: 'Sculpture' },
-  { id: 4, name: 'Glory of Paradise', price: 0, image: 'https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=1200', description: 'Francesco Maria Russo, 1749', category: 'Fresco' },
-  { id: 5, name: 'Anatomical Machine (Male)', price: 0, image: 'https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?w=1200', description: 'Giuseppe Salerno, c. 1763-64', category: 'Anatomical' },
-  { id: 6, name: 'Anatomical Machine (Female)', price: 0, image: 'https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=1200', description: 'Giuseppe Salerno, c. 1763-64', category: 'Anatomical' },
-  { id: 7, name: 'Divine Love', price: 0, image: 'https://images.unsplash.com/photo-1551913902-c92207136625?w=1200', description: 'Unknown Artist, 18th century', category: 'Sculpture' },
-  { id: 8, name: 'Sincerity', price: 0, image: 'https://images.unsplash.com/photo-1549887534-1541e9326642?w=1200', description: 'Francesco Queirolo, 1754', category: 'Sculpture' },
-  { id: 9, name: 'The Deposition', price: 0, image: 'https://images.unsplash.com/photo-1577720643272-265f09367456?w=1200', description: 'Francesco Celebrano, 1762', category: 'Sculpture' },
-  { id: 10, name: 'Memorial to Cecco di Sangro', price: 0, image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200', description: 'Francesco Celebrano, 1766', category: 'Monument' },
+  { id: 1, name: 'Lamborghini Aventador', price: 450000, image: 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=1200', description: 'V12 Engine, 770 HP', category: 'Sports' },
+  { id: 2, name: 'Ferrari 488 GTB', price: 330000, image: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=1200', description: 'Twin-Turbo V8, 661 HP', category: 'Sports' },
+  { id: 3, name: 'Porsche 911 Turbo S', price: 230000, image: 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?w=1200', description: 'Twin-Turbo Flat-6, 640 HP', category: 'Sports' },
+  { id: 4, name: 'Mercedes-AMG GT', price: 180000, image: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=1200', description: 'Handcrafted AMG V8, 523 HP', category: 'Luxury' },
+  { id: 5, name: 'BMW M8 Competition', price: 150000, image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=1200', description: 'Twin-Turbo V8, 617 HP', category: 'Luxury' },
+  { id: 6, name: 'Audi R8 V10', price: 200000, image: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=1200', description: 'Naturally Aspirated V10, 602 HP', category: 'Sports' },
+  { id: 7, name: 'McLaren 720S', price: 310000, image: 'https://images.unsplash.com/photo-1621135802920-133df287f89c?w=1200', description: 'Twin-Turbo V8, 710 HP', category: 'Sports' },
+  { id: 8, name: 'Bentley Continental GT', price: 250000, image: 'https://images.unsplash.com/photo-1563720360172-67b8f3dce741?w=1200', description: 'W12 Engine, 626 HP', category: 'Luxury' },
+  { id: 9, name: 'Rolls-Royce Ghost', price: 350000, image: 'https://images.unsplash.com/photo-1631295868223-63265b40d9e4?w=1200', description: 'Twin-Turbo V12, 563 HP', category: 'Luxury' },
+  { id: 10, name: 'Aston Martin DB11', price: 220000, image: 'https://images.unsplash.com/photo-1596468138838-0f34c2d0773b?w=1200', description: 'Twin-Turbo V8, 503 HP', category: 'Luxury' },
 ];
 
 const ALL_ITEMS = BASE_ITEMS;
@@ -122,7 +122,7 @@ const Navigation = ({ current, onNavigate, cartCount, onCartOpen, search, onSear
               type="text"
               value={search}
               onChange={(e) => onSearchChange(e.target.value)}
-              placeholder="Search artworks..."
+              placeholder="Search cars..."
               className="w-full px-4 py-3 bg-transparent border-b border-charcoal-200 text-charcoal-800 placeholder:text-charcoal-400 focus:outline-none focus:border-charcoal-800 transition-colors font-sans text-sm"
             />
             {search && (
@@ -186,7 +186,7 @@ const SavedDrawer = ({ open, onClose, cart, onRemove }) => {
         open ? 'translate-x-0' : 'translate-x-full'
       }`}>
         <div className="flex items-center justify-between px-8 py-6 border-b border-cream-300">
-          <h3 className="font-serif text-xl text-charcoal-800">Saved Artworks</h3>
+          <h3 className="font-serif text-xl text-charcoal-800">Saved Cars</h3>
           <button 
             onClick={onClose} 
             className="text-charcoal-500 hover:text-charcoal-800 transition-colors"
@@ -220,7 +220,7 @@ const SavedDrawer = ({ open, onClose, cart, onRemove }) => {
         </div>
         
         <div className="flex items-center justify-between px-6 pb-4 border-b border-cream-300">
-          <h3 className="font-serif text-lg text-charcoal-800">Saved Artworks</h3>
+          <h3 className="font-serif text-lg text-charcoal-800">Saved Cars</h3>
           <button 
             onClick={onClose} 
             className="p-2 rounded-full bg-cream-100 hover:bg-cream-200 transition-colors"
@@ -255,8 +255,8 @@ const SavedContent = ({ cart, onRemove }) => {
         <svg className="w-16 h-16 text-charcoal-200 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
         </svg>
-        <p className="text-charcoal-500 font-sans text-sm">No saved artworks</p>
-        <p className="text-charcoal-400 text-xs mt-2 font-sans">Save artworks to view them later</p>
+        <p className="text-charcoal-500 font-sans text-sm">No saved cars</p>
+        <p className="text-charcoal-400 text-xs mt-2 font-sans">Save cars to view them later</p>
       </div>
     );
   }
